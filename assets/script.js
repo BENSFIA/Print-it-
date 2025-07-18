@@ -106,4 +106,44 @@ arrowRight.addEventListener("click", () => {
   updateSlide();
 });
 createDots();
+document.addEventListener("DOMContentLoaded", () => {
+  const cloudsSection = document.querySelector(".clouds");
+  const bigCloud = document.querySelector(".big-cloud");
+  const littleCloud = document.querySelector(".little-cloud");
+
+  // Sécurité si les éléments n'existent pas
+  if (!cloudsSection || !bigCloud || !littleCloud) {
+    console.warn("Un ou plusieurs éléments de nuage sont manquants.");
+    return;
+  }
+
+  // Définissez la distance que chaque nuage parcourra (en pixels)
+  // Des valeurs différentes créent l'effet de parallaxe.
+  const bigCloudTravel = 150;
+  const littleCloudTravel = 300;
+
+  const handleParallaxScroll = () => {
+    // Récupère la position de la section .clouds par rapport à la fenêtre
+    const rect = cloudsSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+
+    // Calcule la progression du scroll (de 0 à 1) au sein de la section
+    const scrollProgress =
+      (viewportHeight - rect.top) / (viewportHeight + rect.height);
+    const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+
+    // Calcule la nouvelle position pour chaque nuage
+    const bigCloudPosition = clampedProgress * bigCloudTravel;
+    const littleCloudPosition = clampedProgress * littleCloudTravel;
+
+    // Applique les transformations via requestAnimationFrame pour une animation fluide
+    window.requestAnimationFrame(() => {
+      bigCloud.style.transform = `translateX(${bigCloudPosition}px)`;
+      littleCloud.style.transform = `translateX(${littleCloudPosition}px)`;
+    });
+  };
+
+  // Écoute chaque événement de scroll sur la page
+  window.addEventListener("scroll", handleParallaxScroll);
+});
 updateSlide();

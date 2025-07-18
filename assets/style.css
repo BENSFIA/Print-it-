@@ -238,13 +238,13 @@ header {
   margin-inline: 5px;
   width: 13px;
   height: 13px;
-  background-color: #ffffff00;
+
   border: 3px solid #fff;
   border-radius: 50%;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 .dot_selected {
-  background-color: #000000;
+  background-color: white;
 }
 /* Fin du code CSS pour le carousel */
 #banner p {

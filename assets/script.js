@@ -48,27 +48,32 @@ const updateSlide = () => {
   updateDots();
 };
 // Fonction pour créer les dots
-
 const createDots = () => {
-  for (let i = 0; i < slides.length; i++) {
-    // une div pour chaque dot
+  slides.forEach((_, index) => {
+    // _ : On utilise un underscore (_) comme premier argument pour indiquer que nous n'avons pas besoin de l'élément lui-même, juste de sa position.
+    // Crée une div pour chaque dot
     const dot = document.createElement("div");
-    // ajouter des classes
+
+    // Ajoute la classe CSS "dot"
     dot.classList.add("dot");
-    // ajouter un attribut data-index pour identifier le dot
-    dot.dataset.slide = i;
-    // Modification de la couleur de fond et de la bordure
+
+    // Ajoute un attribut 'data-slide' avec la valeur de l'index
+    dot.dataset.slide = index;
+
+    // Modifie le style du dot
     dot.style.backgroundColor = "#000000";
     dot.style.borderColor = "#000000";
-    // Ajout d'un écouteur d'événement pour chaque dot
+
+    // Ajoute le dot au conteneur
     dotsContainer.appendChild(dot);
+
+    // Ajoute un écouteur d'événement pour mettre à jour le slide au clic
     dot.addEventListener("click", () => {
-      currentIndex = i;
+      currentIndex = index;
       updateSlide();
     });
-  }
+  });
 };
-
 // Fonction pour mettre à jour les dots
 
 const updateDots = () => {
@@ -116,34 +121,4 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("Un ou plusieurs éléments de nuage sont manquants.");
     return;
   }
-
-  // Définissez la distance que chaque nuage parcourra (en pixels)
-  // Des valeurs différentes créent l'effet de parallaxe.
-  const bigCloudTravel = 150;
-  const littleCloudTravel = 300;
-
-  const handleParallaxScroll = () => {
-    // Récupère la position de la section .clouds par rapport à la fenêtre
-    const rect = cloudsSection.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-
-    // Calcule la progression du scroll (de 0 à 1) au sein de la section
-    const scrollProgress =
-      (viewportHeight - rect.top) / (viewportHeight + rect.height);
-    const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
-
-    // Calcule la nouvelle position pour chaque nuage
-    const bigCloudPosition = clampedProgress * bigCloudTravel;
-    const littleCloudPosition = clampedProgress * littleCloudTravel;
-
-    // Applique les transformations via requestAnimationFrame pour une animation fluide
-    window.requestAnimationFrame(() => {
-      bigCloud.style.transform = `translateX(${bigCloudPosition}px)`;
-      littleCloud.style.transform = `translateX(${littleCloudPosition}px)`;
-    });
-  };
-
-  // Écoute chaque événement de scroll sur la page
-  window.addEventListener("scroll", handleParallaxScroll);
 });
-updateSlide();
